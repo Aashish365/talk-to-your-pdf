@@ -83,10 +83,12 @@ async def websocket_chat(websocket: WebSocket, sid: str):
                 await redis_store.append_message(sid, user_msg)
 
                 try:
-                    # Retrieve across all documents in the session
+                    # Step 1: analyze + multi-step retrieval
+                    await send({"type": "step", "text": "Analyzing question…"})
                     chunks = await retrieve_chunks(sid, content)
 
-                    # Build prompt with history
+                    # Step 2: build prompt and stream answer
+                    await send({"type": "step", "text": "Generating answer…"})
                     history = await redis_store.get_messages(sid)
                     messages = build_prompt(content, chunks, history[:-1])  # exclude the user msg we just added
 

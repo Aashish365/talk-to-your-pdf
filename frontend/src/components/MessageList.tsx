@@ -4,10 +4,11 @@ import type { Message } from "../types";
 interface Props {
   messages: Message[];
   thinking: boolean;
+  thinkingStep?: string;
   onCitationClick?: (page: number, docId?: string) => void;
 }
 
-export function MessageList({ messages, thinking, onCitationClick }: Props) {
+export function MessageList({ messages, thinking, thinkingStep, onCitationClick }: Props) {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export function MessageList({ messages, thinking, onCitationClick }: Props) {
             <div className="avatar">AI</div>
             <div className="thinking-inner">
               <span className="dot" /><span className="dot" /><span className="dot" />
+              {thinkingStep && <span className="thinking-step">{thinkingStep}</span>}
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ export default function App() {
     setDocStatus(docId, state);
   };
 
-  const { messages, connected, thinking, sendMessage } = useWebSocketChat(
+  const { messages, connected, thinking, thinkingStep, sendMessage } = useWebSocketChat(
     sessionId,
     handleDocStatus,
     resetSession,
@@ -63,15 +63,11 @@ export default function App() {
       {/* Header */}
       <header className="header">
         <div className="header-brand">
-          <div className="brand-icon">
-            <svg width="15" height="16" viewBox="0 0 15 16" fill="none">
-              <rect x="1" y="1" width="9" height="12" rx="1.5" stroke="white" strokeWidth="1.5"/>
-              <path d="M4 5h5M4 7.5h5M4 10h3" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
-              <circle cx="12" cy="12.5" r="2.5" fill="#555"/>
-              <path d="M12 11.5v2M11 12.5h2" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <span className="brand-name">TalkToPDF</span>
+          <img src="/logo.png" alt="TalkToPDF logo" className="brand-logo" />
+          <span className="brand-name">
+            <span className="brand-talk">Talk</span> to your{" "}
+            <span className="brand-pdf">PDF</span>
+          </span>
         </div>
         <div className="header-actions">
           <span className={`conn-badge ${connected ? "online" : "offline"}`}>
@@ -114,6 +110,7 @@ export default function App() {
             docReady={anyReady}
             docStatus={anyProcessing ? "processing" : anyReady ? "ready" : "idle"}
             thinking={thinking}
+            thinkingStep={thinkingStep}
             onSend={handleSend}
             onCitationClick={(page, docId) => handleCitationClick(page, docId)}
           />

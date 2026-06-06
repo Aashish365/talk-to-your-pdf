@@ -21,6 +21,7 @@ export interface DocEntry {
 
 export type WsIncoming =
   | { type: "status"; doc_id: string; state: "processing" | "ready" | "error"; error?: string }
+  | { type: "step"; text: string }
   | { type: "token"; text: string }
   | { type: "done"; message_id: string; citations: Citation[] }
   | { type: "error"; message: string }

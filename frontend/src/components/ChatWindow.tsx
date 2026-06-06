@@ -8,23 +8,34 @@ interface Props {
   docReady: boolean;
   docStatus: DocStatus;
   thinking: boolean;
+  thinkingStep?: string;
   onSend: (content: string) => void;
   onCitationClick?: (page: number, docId?: string) => void;
 }
 
 export function ChatWindow({
-  messages, connected, docReady, docStatus, thinking, onSend, onCitationClick,
+  messages, connected, docReady, docStatus, thinking, thinkingStep, onSend, onCitationClick,
 }: Props) {
   const [text, setText] = useState("");
   const taRef = useRef<HTMLTextAreaElement>(null);
   const isStreaming = messages.some((m) => m.streaming);
   const busy = !connected || !docReady || isStreaming || thinking;
 
+  const autoResize = () => {
+    const ta = taRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    ta.style.height = `${ta.scrollHeight}px`;
+  };
+
   const submit = () => {
     const t = text.trim();
     if (!t || busy) return;
     onSend(t);
     setText("");
+    if (taRef.current) {
+      taRef.current.style.height = "auto";
+    }
   };
 
   const onKey = (e: React.KeyboardEvent) => {
@@ -71,7 +82,7 @@ export function ChatWindow({
           </p>
         </div>
       ) : (
-        <MessageList messages={messages} thinking={thinking} onCitationClick={onCitationClick} />
+        <MessageList messages={messages} thinking={thinking} thinkingStep={thinkingStep} onCitationClick={onCitationClick} />
       )}
 
       <div className="chat-foot">
@@ -87,7 +98,7 @@ export function ChatWindow({
             ref={taRef}
             className="chat-ta"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => { setText(e.target.value); autoResize(); }}
             onKeyDown={onKey}
             placeholder={placeholder}
             disabled={busy}

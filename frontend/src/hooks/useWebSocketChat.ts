@@ -10,12 +10,14 @@ export function useWebSocketChat(
   const [messages, setMessages] = useState<Message[]>([]);
   const [connected, setConnected] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState("");
   const socketRef = useRef<ChatSocket | null>(null);
 
   // Reset state whenever the session changes
   useEffect(() => {
     setMessages([]);
     setThinking(false);
+    setThinkingStep("");
   }, [sessionId]);
 
   useEffect(() => {
@@ -28,8 +30,13 @@ export function useWebSocketChat(
           onDocStatus(msg.doc_id, msg.state as DocStatus);
           return;
         }
+        if (msg.type === "step") {
+          setThinkingStep(msg.text);
+          return;
+        }
         if (msg.type === "token") {
           setThinking(false);
+          setThinkingStep("");
           setMessages((prev) => {
             const last = prev[prev.length - 1];
             if (last?.streaming) {
@@ -47,6 +54,7 @@ export function useWebSocketChat(
         }
         if (msg.type === "done") {
           setThinking(false);
+          setThinkingStep("");
           setMessages((prev) =>
             prev.map((m) =>
               m.streaming
@@ -58,6 +66,7 @@ export function useWebSocketChat(
         }
         if (msg.type === "error") {
           setThinking(false);
+          setThinkingStep("");
           // Session expired on the server — silently recreate it
           if (msg.message?.toLowerCase().includes("invalid or expired session")) {
             onSessionExpired();
@@ -91,5 +100,5 @@ export function useWebSocketChat(
     }]);
   }, []);
 
-  return { messages, connected, thinking, sendMessage };
+  return { messages, connected, thinking, thinkingStep, sendMessage };
 }
