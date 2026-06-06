@@ -83,13 +83,30 @@ if ($freeGB -lt 5) {
     Write-Ok "${freeGB}GB available"
 }
 
-# ---- 6. Data directory ----------------------------------------------------------
+# ---- 6. Environment file --------------------------------------------------------
+Write-Step 'Checking environment file'
+
+$envFile     = Join-Path $ScriptDir '.env'
+$envExample  = Join-Path $ScriptDir '.env.example'
+
+if (-not (Test-Path $envFile)) {
+    if (Test-Path $envExample) {
+        Copy-Item $envExample $envFile
+        Write-Ok '.env created from .env.example — edit it if you need custom settings'
+    } else {
+        Write-Fail '.env.example not found. Cannot create .env automatically.'
+    }
+} else {
+    Write-Ok '.env already exists'
+}
+
+# ---- 7. Data directory ----------------------------------------------------------
 Write-Step 'Preparing data directory'
 
 New-Item -ItemType Directory -Force -Path (Join-Path $ScriptDir 'data\sessions') | Out-Null
 Write-Ok 'data\sessions ready'
 
-# ---- 7. Build and start services ------------------------------------------------
+# ---- 8. Build and start services ------------------------------------------------
 Write-Step 'Building and starting services (may take a few minutes on first run)'
 
 Invoke-Expression "$composeCmd up -d --build"
