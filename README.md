@@ -14,6 +14,7 @@
   <img src="https://img.shields.io/badge/Ollama-local-black?style=flat-square" />
   <img src="https://img.shields.io/badge/Qdrant-vector%20DB-red?style=flat-square" />
   <img src="https://img.shields.io/badge/Docker-compose-2496ED?style=flat-square&logo=docker" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" />
 </p>
 
 ---
@@ -195,4 +196,4 @@ docker compose down -v       # also remove Qdrant volume
 
 ## License
 
-MIT
+This project is licensed under the [MIT License](LICENSE) — you are free to use, modify, and distribute it for any purpose, including commercial use, as long as the original copyright notice is retained.
