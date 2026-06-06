@@ -17,6 +17,12 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" />
 </p>
 
+<p align="center">
+  <a href="https://youtu.be/NLFjmAubwTk">
+    <img src="https://img.shields.io/badge/▶%20Watch%20Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch Demo"/>
+  </a>
+</p>
+
 ---
 
 ## What it does
